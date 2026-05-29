@@ -11,11 +11,11 @@ import { useStore } from '../context/StoreContext';
 import { X } from 'lucide-react';
 
 export default function CatalogPageLayout({ title, subtitle, type }) {
-  const { selectedProduct, wishlist, searchQuery } = useStore();
+  const { products: allProducts, selectedProduct, wishlist, searchQuery } = useStore();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const products = useMemo(() => {
-    let result = [...PRODUCTS];
+    let result = [...allProducts];
 
     if (type === 'new-arrivals') result = result.filter((item) => item.isNew);
     if (type === 'best-sellers') result = result.filter((item) => item.tagType === 'bestseller' || item.rating >= 4.8);

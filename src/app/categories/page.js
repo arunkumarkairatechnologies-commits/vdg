@@ -15,19 +15,12 @@ import CartDrawer from '../components/CartDrawer';
 import Footer from '../components/Footer';
 import { ChevronRight, SlidersHorizontal, Grid, X, Search } from 'lucide-react';
 
-const horizontalCategories = [
-  { name: 'New Born (0–3 Months)', bg: '#e6fcf5', img: '/products/tshirt_green.png' },
-  { name: 'Baby Essentials', bg: '#fff0f6', img: '/products/hoodie_pink.png' },
-  { name: 'Toys', bg: '#fcf8f2', img: '/products/cargo_pants_khaki.png' },
-  { name: 'Books', bg: '#e9ecef', img: '/products/oversized_tshirt_black.png' },
-  { name: 'Stationery', bg: '#f3f0ff', img: '/products/backpack_black.png' },
-  { name: 'Bags', bg: '#f3f0ff', img: '/products/backpack_black.png' },
-  { name: 'Jeans', bg: '#e8f4fd', img: '/products/jeans_blue.png' },
-  { name: 'Frocks', bg: '#fff9db', img: '/products/shirt_striped.png' }
-];
+// Dynamic Category Slider items from backend
 
 export default function CategoriesPage() {
   const {
+    products,
+    categoryItems,
     searchQuery,
     selectedCategory,
     setSelectedCategory,
@@ -42,6 +35,8 @@ export default function CategoriesPage() {
     setSelectedProduct,
     setSearchQuery,
   } = useStore();
+
+  const horizontalCategories = categoryItems || [];
 
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -61,7 +56,7 @@ export default function CategoriesPage() {
 
   // Smart Filtering Logic supporting checklist multi-select and top bar
   const filteredProducts = useMemo(() => {
-    let result = [...PRODUCTS];
+    let result = [...products];
 
     // Search Query Filter
     if (searchQuery.trim() !== '') {
@@ -207,7 +202,7 @@ export default function CategoriesPage() {
                     {checkedCategories.length === 1 ? checkedCategories[0] : 'All Categories'}
                   </h2>
                   <p className="text-sm sm:text-base text-zinc-500 font-normal mt-1.5">
-                    Showing 1-{filteredProducts.length} of {PRODUCTS.length} products
+                    Showing 1-{filteredProducts.length} of {products.length} products
                   </p>
                 </div>
 

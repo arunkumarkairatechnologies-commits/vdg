@@ -3,13 +3,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
+import { useStore } from '../context/StoreContext';
 
 export default function HeroSlider({ onShopClick }) {
-  const banners = [
-    { id: 1, src: '/banner/banner1.png', alt: 'vdgfashion Hero Banner 1' },
-    { id: 2, src: '/banner/banner2.png', alt: 'vdgfashion Hero Banner 2' },
-    { id: 3, src: '/banner/banner3.png', alt: 'vdgfashion Hero Banner 3' }
-  ];
+  const { heroBanners } = useStore();
+  const banners = heroBanners || [];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);

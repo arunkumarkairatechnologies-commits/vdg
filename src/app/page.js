@@ -20,6 +20,9 @@ import 'aos/dist/aos.css';
 
 export default function Home() {
   const {
+    products,
+    categoryItems,
+    marketingBanners,
     searchQuery,
     selectedCategory,
     checkedCategories,
@@ -52,7 +55,7 @@ export default function Home() {
 
   // Filtering logic
   const filteredProducts = useMemo(() => {
-    let result = [...PRODUCTS];
+    let result = [...products];
 
     if (searchQuery.trim() !== '') {
       const q = searchQuery.toLowerCase();
@@ -98,16 +101,7 @@ export default function Home() {
   }, [searchQuery, selectedCategory, checkedCategories, priceRange, selectedColor, selectedSize, sortBy]);
 
   // Categories Horizontal track list
-  const categoryTrack = [
-    { name: 'New Born', bg: '#e6fcf5', img: '/products/tshirt_green.png', categoryRef: 'New Born (0–3 Months)' },
-    { name: 'Baby Essentials', bg: '#fff0f6', img: '/products/hoodie_pink.png', categoryRef: 'Baby Essentials' },
-    { name: 'Toys', bg: '#fcf8f2', img: '/products/cargo_pants_khaki.png', categoryRef: 'Toys' },
-    { name: 'Books', bg: '#e9ecef', img: '/products/oversized_tshirt_black.png', categoryRef: 'Books' },
-    { name: 'Stationery', bg: '#f3f0ff', img: '/products/backpack_black.png', categoryRef: 'Stationery' },
-    { name: 'Bags', bg: '#f3f0ff', img: '/products/backpack_black.png', categoryRef: 'Bags' },
-    { name: 'Jeans', bg: '#e8f4fd', img: '/products/jeans_blue.png', categoryRef: 'Jeans' },
-    { name: 'Frocks', bg: '#fff9db', img: '/products/shirt_striped.png', categoryRef: 'Frocks' },
-  ];
+  const categoryTrack = categoryItems || [];
 
   const handleScrollToShop = () => {
     const catalogElement = document.getElementById('shop-catalog');
@@ -276,83 +270,46 @@ export default function Home() {
 
               {/* Bottom twin marketing banners with side fade AOS slides */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-                
-                {/* Left Banner: Summer Outfits */}
-                <div
-                  data-aos="fade-right"
-                  className="relative overflow-hidden rounded-[2rem] bg-[#d9f2ec] border border-zinc-200/40 p-6 sm:p-8 flex items-center gap-4 vdgfashion-card-shadow cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-300 min-h-[220px] sm:min-h-[260px] text-black"
-                  onClick={() => { setSelectedCategory('T-Shirts'); handleScrollToShop(); }}
-                >
-                  {/* Background decoration lines like in the fruit banner */}
-                  <div className="absolute left-0 top-0 w-24 h-full bg-[radial-gradient(#ffffff_1.5px,transparent_1.5px)] [background-size:12px_12px] opacity-20 pointer-events-none" />
+                {marketingBanners && marketingBanners.slice(0, 2).map((banner, index) => (
+                  <div
+                    key={banner.id || index}
+                    data-aos={index === 0 ? "fade-right" : "fade-left"}
+                    className="relative overflow-hidden rounded-[2rem] border border-zinc-200/40 p-6 sm:p-8 flex items-center gap-4 vdgfashion-card-shadow cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-300 min-h-[220px] sm:min-h-[260px] text-black"
+                    style={{ backgroundColor: banner.bg || '#ffffff' }}
+                    onClick={() => { setSelectedCategory(banner.categoryRef); handleScrollToShop(); }}
+                  >
+                    {/* Background decoration lines */}
+                    <div className="absolute left-0 top-0 w-24 h-full bg-[radial-gradient(#ffffff_1.5px,transparent_1.5px)] [background-size:12px_12px] opacity-20 pointer-events-none" />
 
-                  {/* Left Column: Product Image (Larger & Scaling) */}
-                  <div className="w-[45%] h-full flex items-center justify-center relative select-none">
-                    <div className="relative w-[110px] h-[110px] sm:w-[160px] sm:h-[160px] md:w-[180px] md:h-[180px] z-10 transition-transform duration-500 hover:scale-110">
-                      <Image
-                        src="/products/tshirt_green.png"
-                        alt="Summer Outfits"
-                        fill
-                        className="object-contain"
-                        priority
-                      />
+                    {/* Left Column: Product Image */}
+                    <div className="w-[45%] h-full flex items-center justify-center relative select-none">
+                      <div className="relative w-[110px] h-[110px] sm:w-[160px] sm:h-[160px] md:w-[180px] md:h-[180px] z-10 transition-transform duration-500 hover:scale-110">
+                        <Image
+                          src={banner.img}
+                          alt={banner.title}
+                          fill
+                          className="object-contain"
+                          priority
+                        />
+                      </div>
+                    </div>
+
+                    {/* Right Column: Text & Button */}
+                    <div className="w-[55%] flex flex-col justify-center text-left pl-2 z-10">
+                      <h3 className="text-3xl sm:text-4xl lg:text-4.5xl font-serif italic font-black text-zinc-950 leading-tight tracking-tight">
+                        {banner.title}
+                      </h3>
+                      <p className="text-sm sm:text-base md:text-lg text-zinc-750 font-normal mt-1.5 leading-relaxed">
+                        {banner.description}
+                      </p>
+                      <button
+                        className="mt-4 bg-[#dc2626] hover:bg-[#b91c1c] text-white text-xs sm:text-sm font-semibold tracking-wider uppercase px-5 py-2.5 rounded-xl w-fit transition-colors shadow-xs active:scale-98"
+                      >
+                        {banner.buttonText || 'SHOP NOW'}
+                      </button>
                     </div>
                   </div>
-
-                  {/* Right Column: Text & Button */}
-                  <div className="w-[55%] flex flex-col justify-center text-left pl-2 z-10">
-                    <h3 className="text-3xl sm:text-4xl lg:text-4.5xl font-serif italic font-black text-zinc-950 leading-tight tracking-tight">
-                      Summer Outfits
-                    </h3>
-                    <p className="text-sm sm:text-base md:text-lg text-zinc-700 font-normal mt-1.5 leading-relaxed">
-                      100% Pure Natural Cotton Wear
-                    </p>
-                    <button
-                      className="mt-4 bg-[#dc2626] hover:bg-[#b91c1c] text-white text-xs sm:text-sm font-semibold tracking-wider uppercase px-5 py-2.5 rounded-xl w-fit transition-colors shadow-xs active:scale-98"
-                    >
-                      SHOP NOW
-                    </button>
-                  </div>
-                </div>
-
-                {/* Right Banner: Winter Hoodies */}
-                <div
-                  data-aos="fade-left"
-                  className="relative overflow-hidden rounded-[2rem] bg-[#faedd0] border border-zinc-200/40 p-6 sm:p-8 flex items-center gap-4 vdgfashion-card-shadow cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-300 min-h-[220px] sm:min-h-[260px] text-black"
-                  onClick={() => { setSelectedCategory('Hoodies'); handleScrollToShop(); }}
-                >
-                  {/* Background decoration dots like in the juice banner */}
-                  <div className="absolute left-0 top-0 w-24 h-full bg-[radial-gradient(#ffffff_1.5px,transparent_1.5px)] [background-size:12px_12px] opacity-20 pointer-events-none" />
-
-                  {/* Left Column: Product Image (Larger & Scaling) */}
-                  <div className="w-[45%] h-full flex items-center justify-center relative select-none">
-                    <div className="relative w-[110px] h-[110px] sm:w-[160px] sm:h-[160px] md:w-[180px] md:h-[180px] z-10 transition-transform duration-500 hover:scale-110">
-                      <Image
-                        src="/products/hoodie_pink.png"
-                        alt="Premium Hoodies"
-                        fill
-                        className="object-contain"
-                        priority
-                      />
-                    </div>
-                  </div>
-
-                  {/* Right Column: Text & Button */}
-                  <div className="w-[55%] flex flex-col justify-center text-left pl-2 z-10">
-                    <h3 className="text-3xl sm:text-4xl lg:text-4.5xl font-serif italic font-black text-zinc-950 leading-tight tracking-tight">
-                      Winter Hoodies
-                    </h3>
-                    <p className="text-sm sm:text-base md:text-lg text-zinc-700 font-normal mt-1.5 leading-relaxed">
-                      With 25% Off All Winter Wear
-                    </p>
-                    <button
-                      className="mt-4 bg-[#dc2626] hover:bg-[#b91c1c] text-white text-xs sm:text-sm font-semibold tracking-wider uppercase px-5 py-2.5 rounded-xl w-fit transition-colors shadow-xs active:scale-98"
-                    >
-                      SHOP NOW
-                    </button>
-                  </div>
-                </div>
-
+                ))}
               </div>
             </div>
           )}

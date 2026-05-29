@@ -1,16 +1,111 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { PRODUCTS } from '../data/products';
+
+const DEFAULT_HERO_BANNERS = [
+  { id: 1, src: '/banner/banner1.png', alt: 'vdgfashion Hero Banner 1' },
+  { id: 2, src: '/banner/banner2.png', alt: 'vdgfashion Hero Banner 2' },
+  { id: 3, src: '/banner/banner3.png', alt: 'vdgfashion Hero Banner 3' }
+];
+
+const DEFAULT_CATEGORY_ITEMS = [
+  { id: 1, name: 'New Born', bg: '#e6fcf5', img: '/products/tshirt_green.png', categoryRef: 'New Born (0–3 Months)' },
+  { id: 2, name: 'Baby Essentials', bg: '#fff0f6', img: '/products/hoodie_pink.png', categoryRef: 'Baby Essentials' },
+  { id: 3, name: 'Toys', bg: '#fcf8f2', img: '/products/cargo_pants_khaki.png', categoryRef: 'Toys' },
+  { id: 4, name: 'Books', bg: '#e9ecef', img: '/products/oversized_tshirt_black.png', categoryRef: 'Books' },
+  { id: 5, name: 'Stationery', bg: '#f3f0ff', img: '/products/backpack_black.png', categoryRef: 'Stationery' },
+  { id: 6, name: 'Bags', bg: '#f3f0ff', img: '/products/backpack_black.png', categoryRef: 'Bags' },
+  { id: 7, name: 'Jeans', bg: '#e8f4fd', img: '/products/jeans_blue.png', categoryRef: 'Jeans' },
+  { id: 8, name: 'Frocks', bg: '#fff9db', img: '/products/shirt_striped.png', categoryRef: 'Frocks' },
+];
+
+const DEFAULT_MARKETING_BANNERS = [
+  {
+    id: 1,
+    title: "Summer Outfits",
+    description: "100% Pure Natural Cotton Wear",
+    bg: "#d9f2ec",
+    img: "/products/tshirt_green.png",
+    buttonText: "SHOP NOW",
+    categoryRef: "T-Shirts"
+  },
+  {
+    id: 2,
+    title: "Winter Hoodies",
+    description: "With 25% Off All Winter Wear",
+    bg: "#faedd0",
+    img: "/products/hoodie_pink.png",
+    buttonText: "SHOP NOW",
+    categoryRef: "Rompers"
+  }
+];
 
 const StoreContext = createContext();
 
 export function StoreProvider({ children }) {
+  // Products state (dynamic from Django, falls back to static PRODUCTS)
+  const [products, setProducts] = useState(PRODUCTS);
+
+  // Storefront dynamic layouts (CMS components)
+  const [heroBanners, setHeroBanners] = useState(DEFAULT_HERO_BANNERS);
+  const [categoryItems, setCategoryItems] = useState(DEFAULT_CATEGORY_ITEMS);
+  const [marketingBanners, setMarketingBanners] = useState(DEFAULT_MARKETING_BANNERS);
+
   // Cart state
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   // Wishlist state (array of product IDs)
   const [wishlist, setWishlist] = useState([]);
+
+  // Fetch products and CMS storefront layouts from Django API on mount
+  useEffect(() => {
+    // 1. Fetch Products
+    fetch('http://127.0.0.1:8000/api/products/')
+      .then(res => {
+        if (!res.ok) throw new Error('API server offline or invalid response');
+        return res.json();
+      })
+      .then(data => {
+        if (data && data.length > 0) {
+          setProducts(data);
+        }
+      })
+      .catch(err => {
+        console.warn('API fetch failed, using static products fallback:', err);
+      });
+
+    // 2. Fetch Hero Banners
+    fetch('http://127.0.0.1:8000/api/hero-banners/')
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then(data => {
+        if (data && data.length > 0) {
+          setHeroBanners(data);
+        }
+      })
+      .catch(() => {});
+
+    // 3. Fetch Category Items
+    fetch('http://127.0.0.1:8000/api/category-items/')
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then(data => {
+        if (data && data.length > 0) {
+          setCategoryItems(data);
+        }
+      })
+      .catch(() => {});
+
+    // 4. Fetch Marketing Banners
+    fetch('http://127.0.0.1:8000/api/marketing-banners/')
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then(data => {
+        if (data && data.length > 0) {
+          setMarketingBanners(data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Search & Filtering state
   const [searchQuery, setSearchQuery] = useState('');
@@ -162,6 +257,10 @@ export function StoreProvider({ children }) {
   return (
     <StoreContext.Provider
       value={{
+        products,
+        heroBanners,
+        categoryItems,
+        marketingBanners,
         cart,
         isCartOpen,
         setIsCartOpen,

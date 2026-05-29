@@ -1,3 +1,4 @@
+@import url('https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css');
 @import "tailwindcss";
 
 :root {
@@ -31,6 +32,33 @@
   --color-zinc-550: #495057;
   --color-zinc-650: #343a40;
   --color-zinc-850: #212529;
+
+  /* Admin CMS Panel Theme Colors */
+  --color-base: #0a0c10;
+  --color-base-light: #f8fafc;
+  --color-card: #10141c;
+  --color-card-light: #ffffff;
+  --color-elevated: #161b26;
+  --color-elevated-light: #f1f5f9;
+  --color-input: #1e2535;
+  --color-input-light: #e2e8f0;
+  --color-border-hover: #3a4560;
+  --color-border-light: #e2e8f0;
+  --color-border-hover-light: #cbd5e1;
+  --color-text-primary: #e8eaf0;
+  --color-text-primary-light: #0f172a;
+  --color-text-secondary: #8892a8;
+  --color-text-secondary-light: #64748b;
+  --color-text-muted: #5a637a;
+  --color-text-muted-light: #94a3b8;
+  --color-accent: #4f7fff;
+  --color-accentGlow: rgba(79,127,255,0.15);
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-purple: #a78bfa;
+  --color-cyan: #22d3ee;
+  --color-pink: #f472b6;
 }
 
 /* Structural presets */
@@ -173,3 +201,49 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .vdgfashion-transition {
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* Admin scrollbar and icon presets */
+.ti {
+  font-size: 1.25rem;
+  vertical-align: middle;
+}
+.stock-bar-green { background-color: #22c55e; }
+.stock-bar-amber { background-color: #f59e0b; }
+.stock-bar-red { background-color: #ef4444; }
+
+/* Custom global font sizing scale-up utility for Trendify Admin Panel */
+.admin-portal-font-boost .text-\[8px\] {
+  font-size: 10px !important;
+}
+.admin-portal-font-boost .text-\[9px\] {
+  font-size: 11px !important;
+}
+.admin-portal-font-boost .text-\[10px\] {
+  font-size: 12px !important;
+}
+.admin-portal-font-boost .text-\[11px\] {
+  font-size: 13px !important;
+}
+.admin-portal-font-boost .text-xs {
+  font-size: 0.875rem !important; /* 14px instead of 12px */
+}
+.admin-portal-font-boost .text-sm {
+  font-size: 1rem !important; /* 16px instead of 14px */
+}
+.admin-portal-font-boost .text-base {
+  font-size: 1.125rem !important; /* 18px instead of 16px */
+}
+.admin-portal-font-boost .text-lg {
+  font-size: 1.25rem !important; /* 20px instead of 18px */
+}
+.admin-portal-font-boost .text-xl {
+  font-size: 1.375rem !important; /* 22px instead of 20px */
+}
+.admin-portal-font-boost .text-2xl {
+  font-size: 1.75rem !important; /* 28px instead of 24px */
+}
+.admin-portal-font-boost .text-3xl {
+  font-size: 2.25rem !important; /* 36px instead of 30px */
+}
+
+

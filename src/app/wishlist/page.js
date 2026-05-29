@@ -15,7 +15,7 @@ import ProductDetailView from '../components/ProductDetailView';
 import { Heart, ChevronRight, X } from 'lucide-react';
 
 export default function WishlistPage() {
-  const { selectedProduct, wishlist, searchQuery, setSelectedProduct, setSelectedCategory } = useStore();
+  const { products, selectedProduct, wishlist, searchQuery, setSelectedProduct, setSelectedCategory } = useStore();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function WishlistPage() {
 
   // Filter items in the wishlist that match search queries
   const wishlistProducts = useMemo(() => {
-    let result = PRODUCTS.filter((item) => wishlist.includes(item.id));
+    let result = products.filter((item) => wishlist.includes(item.id));
 
     const q = searchQuery.trim().toLowerCase();
     if (q) {
