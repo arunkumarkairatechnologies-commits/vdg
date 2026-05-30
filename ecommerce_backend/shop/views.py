@@ -7,15 +7,15 @@ from .serializers import (
 )
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
+    queryset = Category.objects.filter(is_active=True).order_by('order', 'name')
     serializer_class = CategorySerializer
 
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all().prefetch_related('colors', 'sizes', 'features', 'details')
+    queryset = Product.objects.filter(is_active=True).prefetch_related('colors', 'sizes', 'features', 'details').order_by('-created_at')
     serializer_class = ProductSerializer
 
 class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
+    queryset = Order.objects.all().order_by('-created_at')
     serializer_class = OrderCreateSerializer
 
     def create(self, request, *args, **kwargs):
@@ -31,15 +31,15 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 
 class HeroBannerViewSet(viewsets.ModelViewSet):
-    queryset = HeroBanner.objects.all()
+    queryset = HeroBanner.objects.filter(is_active=True).order_by('order')
     serializer_class = HeroBannerSerializer
 
 
 class CategoryItemViewSet(viewsets.ModelViewSet):
-    queryset = CategoryItem.objects.all()
+    queryset = CategoryItem.objects.filter(is_active=True).order_by('order')
     serializer_class = CategoryItemSerializer
 
 
 class MarketingBannerViewSet(viewsets.ModelViewSet):
-    queryset = MarketingBanner.objects.all()
+    queryset = MarketingBanner.objects.filter(is_active=True).order_by('order')
     serializer_class = MarketingBannerSerializer

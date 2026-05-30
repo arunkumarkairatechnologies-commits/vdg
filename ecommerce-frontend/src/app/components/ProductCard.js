@@ -11,9 +11,17 @@ export default function ProductCard({ product }) {
 
   const isLiked = isWishlisted(product.id);
 
+  const colors = product.colors && product.colors.length > 0 
+    ? product.colors 
+    : [{ name: "Sage Green", hex: "#0ca678" }];
+
+  const sizes = product.sizes && product.sizes.length > 0 
+    ? product.sizes 
+    : ["0-1M"];
+
   const handleAddToCart = (e) => {
     e.stopPropagation(); // Prevent opening detail view
-    addToCart(product, product.colors[0].hex, product.sizes[0], 1);
+    addToCart(product, colors[0].hex, sizes[0], 1);
   };
 
   const getTagBgColor = () => {
@@ -98,7 +106,7 @@ export default function ProductCard({ product }) {
       <div className="mt-3.5 flex items-center justify-between">
         {/* Swatches dots preview */}
         <div className="flex items-center gap-1.5">
-          {product.colors.slice(0, 4).map((col, idx) => (
+          {colors.slice(0, 4).map((col, idx) => (
             <span
               key={idx}
               className="h-3 w-3 rounded-full border border-zinc-200"

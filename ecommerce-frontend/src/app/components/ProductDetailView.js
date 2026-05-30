@@ -37,15 +37,29 @@ export default function ProductDetailView() {
   if (!selectedProduct) return null;
 
   // Safe computed fallback variables to prevent rendering crashes
-  const currentColor = selectedProduct.colors?.some(c => c.hex === selectedColor?.hex)
+  const colors = selectedProduct.colors && selectedProduct.colors.length > 0
+    ? selectedProduct.colors
+    : [{ name: "Sage Green", hex: "#0ca678" }];
+
+  const sizes = selectedProduct.sizes && selectedProduct.sizes.length > 0
+    ? selectedProduct.sizes
+    : ["0-1M"];
+
+  const thumbnails = selectedProduct.thumbnails && selectedProduct.thumbnails.length > 0
+    ? selectedProduct.thumbnails
+    : [selectedProduct.image];
+
+  const details = selectedProduct.details || [];
+
+  const currentColor = colors.some(c => c.hex === selectedColor?.hex)
     ? selectedColor 
-    : selectedProduct.colors?.[0];
+    : colors[0];
 
-  const currentSize = selectedProduct.sizes?.includes(selectedSize)
+  const currentSize = sizes.includes(selectedSize)
     ? selectedSize 
-    : (selectedProduct.sizes?.includes('M') ? 'M' : (selectedProduct.sizes?.[0] || ''));
+    : (sizes.includes('M') ? 'M' : (sizes[0] || ''));
 
-  const currentImageIdx = activeImageIdx < selectedProduct.thumbnails?.length
+  const currentImageIdx = activeImageIdx < thumbnails.length
     ? activeImageIdx 
     : 0;
 
@@ -85,7 +99,7 @@ export default function ProductDetailView() {
           
           {/* Thumbnails */}
           <div className="sm:col-span-2 order-2 sm:order-1 flex sm:flex-col gap-3 overflow-x-auto sm:overflow-x-visible pb-2 sm:pb-0">
-            {selectedProduct.thumbnails.map((thumb, idx) => (
+            {thumbnails.map((thumb, idx) => (
               <button
                 key={idx}
                 onClick={() => setActiveImageIdx(idx)}
@@ -121,7 +135,7 @@ export default function ProductDetailView() {
             {/* Display active image */}
             <div className="relative w-full h-full hover-scale">
               <Image
-                src={selectedProduct.thumbnails[currentImageIdx] || selectedProduct.image}
+                src={thumbnails[currentImageIdx] || selectedProduct.image}
                 alt={selectedProduct.name}
                 fill
                 className="object-contain"
@@ -187,7 +201,7 @@ export default function ProductDetailView() {
               <span>COLOR: <strong className="text-zinc-950 font-bold">{currentColor?.name || 'Default'}</strong></span>
             </div>
             <div className="flex items-center gap-3">
-              {selectedProduct.colors.map((color) => {
+              {colors.map((color) => {
                 const isSelected = currentColor?.hex === color.hex;
                 return (
                   <button
@@ -223,7 +237,7 @@ export default function ProductDetailView() {
               </button>
             </div>
             <div className="flex flex-wrap gap-2.5">
-              {selectedProduct.sizes.map((size) => {
+              {sizes.map((size) => {
                 const isSelected = currentSize === size;
                 return (
                   <button
@@ -312,7 +326,7 @@ export default function ProductDetailView() {
 
           {/* Collapsible Accordion */}
           <div className="border border-zinc-200 rounded-2xl overflow-hidden divide-y divide-zinc-200">
-            {selectedProduct.details.map((detail, idx) => {
+            {details.map((detail, idx) => {
               const isOpen = openAccordionIdx === idx;
               return (
                 <div key={idx} className="bg-white">

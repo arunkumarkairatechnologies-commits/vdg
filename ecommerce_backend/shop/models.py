@@ -3,9 +3,14 @@ from django.db import models
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
     parent_category = models.CharField(max_length=255, blank=True, null=True)
+    image = models.ImageField(upload_to='categories/', blank=True, null=True)
+    order = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = "Categories"
+        ordering = ['order', 'name']
 
     def __str__(self):
         return self.name
@@ -14,19 +19,24 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=255)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='products')
-    parent_category = models.CharField(max_length=255)  # e.g., "New Born (0–3 Months)", "3–6 Months"
+    parent_category = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     original_price = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.CharField(max_length=50, blank=True, null=True)
-    tag_type = models.CharField(max_length=50, blank=True, null=True) # "discount", "bestseller", "new"
+    tag_type = models.CharField(max_length=50, blank=True, null=True)
     rating = models.FloatField(default=0.0)
     reviews_count = models.IntegerField(default=0)
     is_new = models.BooleanField(default=False)
     description = models.TextField()
-    image = models.CharField(max_length=255)  # Store image path e.g. "/products/tshirt_green.png"
-    color_hex = models.CharField(max_length=50) # e.g. "#e6fcf5"
+    image = models.ImageField(upload_to='products/')
+    color_hex = models.CharField(max_length=50)
     cart_btn_color = models.CharField(max_length=100, blank=True, null=True)
     stock = models.IntegerField(default=50)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
 
     def __str__(self):
         return self.name
@@ -106,18 +116,32 @@ class OrderItem(models.Model):
 
 
 class HeroBanner(models.Model):
-    src = models.CharField(max_length=255)  # Image path, e.g. "/banner/banner1.png"
+    title = models.CharField(max_length=255)
+    subtitle = models.CharField(max_length=255, blank=True)
+    image = models.ImageField(upload_to='banners/')
     alt = models.CharField(max_length=255)
+    link = models.CharField(max_length=500, blank=True)
+    order = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order']
 
     def __str__(self):
-        return self.alt
+        return self.title
 
 
 class CategoryItem(models.Model):
     name = models.CharField(max_length=100)
-    bg = models.CharField(max_length=50)  # pastel background color hex/rgb
-    img = models.CharField(max_length=255)  # Image path, e.g. "/products/tshirt_green.png"
-    categoryRef = models.CharField(max_length=100)  # filter reference, e.g. "Toys"
+    bg = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='category_items/')
+    category_ref = models.CharField(max_length=100)
+    order = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order']
 
     def __str__(self):
         return self.name
@@ -126,10 +150,15 @@ class CategoryItem(models.Model):
 class MarketingBanner(models.Model):
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
-    bg = models.CharField(max_length=50)  # background color hex
-    img = models.CharField(max_length=255)  # Image path, e.g. "/products/hoodie_pink.png"
-    buttonText = models.CharField(max_length=100, default="SHOP NOW")
-    categoryRef = models.CharField(max_length=100)  # filter reference, e.g. "T-Shirts"
+    bg = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='marketing/')
+    button_text = models.CharField(max_length=100, default="SHOP NOW")
+    category_ref = models.CharField(max_length=100)
+    order = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order']
 
     def __str__(self):
         return self.title

@@ -1,4 +1,5 @@
 @import url('https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -213,37 +214,37 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 /* Custom global font sizing scale-up utility for Trendify Admin Panel */
 .admin-portal-font-boost .text-\[8px\] {
-  font-size: 10px !important;
-}
-.admin-portal-font-boost .text-\[9px\] {
   font-size: 11px !important;
 }
-.admin-portal-font-boost .text-\[10px\] {
+.admin-portal-font-boost .text-\[9px\] {
   font-size: 12px !important;
 }
-.admin-portal-font-boost .text-\[11px\] {
+.admin-portal-font-boost .text-\[10px\] {
   font-size: 13px !important;
 }
+.admin-portal-font-boost .text-\[11px\] {
+  font-size: 14px !important;
+}
 .admin-portal-font-boost .text-xs {
-  font-size: 0.875rem !important; /* 14px instead of 12px */
+  font-size: 0.95rem !important; /* ~15px instead of 12px */
 }
 .admin-portal-font-boost .text-sm {
-  font-size: 1rem !important; /* 16px instead of 14px */
+  font-size: 1.0625rem !important; /* 17px instead of 14px */
 }
 .admin-portal-font-boost .text-base {
-  font-size: 1.125rem !important; /* 18px instead of 16px */
+  font-size: 1.2rem !important; /* ~19px instead of 16px */
 }
 .admin-portal-font-boost .text-lg {
-  font-size: 1.25rem !important; /* 20px instead of 18px */
+  font-size: 1.35rem !important; /* ~22px instead of 18px */
 }
 .admin-portal-font-boost .text-xl {
-  font-size: 1.375rem !important; /* 22px instead of 20px */
+  font-size: 1.55rem !important; /* ~25px instead of 20px */
 }
 .admin-portal-font-boost .text-2xl {
-  font-size: 1.75rem !important; /* 28px instead of 24px */
+  font-size: 1.9rem !important; /* ~30px instead of 24px */
 }
 .admin-portal-font-boost .text-3xl {
-  font-size: 2.25rem !important; /* 36px instead of 30px */
+  font-size: 2.45rem !important; /* ~39px instead of 30px */
 }
 
 

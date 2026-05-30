@@ -86,12 +86,32 @@ export function StoreProvider({ children }) {
       })
       .catch(() => {});
 
-    // 3. Fetch Category Items
-    fetch('http://127.0.0.1:8000/api/category-items/')
+    // 3. Fetch Category Items dynamically from Categories API to sync with Admin Page
+    fetch('http://127.0.0.1:8000/api/categories/')
       .then(res => res.ok ? res.json() : Promise.reject())
       .then(data => {
         if (data && data.length > 0) {
-          setCategoryItems(data);
+          const getPastelBg = (name) => {
+            const n = name.toLowerCase();
+            if (n.includes('born') || n.includes('jabla') || n.includes('jab')) return '#e6fcf5';
+            if (n.includes('essential') || n.includes('romper')) return '#fff0f6';
+            if (n.includes('toy') || n.includes('wood')) return '#fcf8f2';
+            if (n.includes('book') || n.includes('learn') || n.includes('activity')) return '#e9ecef';
+            if (n.includes('station') || n.includes('bag') || n.includes('school')) return '#f3f0ff';
+            if (n.includes('jean')) return '#e8f4fd';
+            if (n.includes('frock') || n.includes('dress')) return '#fff9db';
+            if (n.includes('shoe') || n.includes('trainer')) return '#f1f3f5';
+            return '#f8fafc';
+          };
+
+          const mapped = data.map((c) => ({
+            id: c.id,
+            name: c.name,
+            bg: getPastelBg(c.name),
+            img: c.image_url || c.image || '/products/accessories_category.png',
+            categoryRef: c.name
+          }));
+          setCategoryItems(mapped);
         }
       })
       .catch(() => {});
